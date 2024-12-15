@@ -138,6 +138,18 @@ ARCHITECTURE circuito OF datapath IS
 		);
 	END COMPONENT;
 
+
+
+
+	COMPONENT LimitadorTempo IS
+		port (
+			tempo : in std_logic_vector(3 downto 0);
+			saida : out std_logic_vector(3 downto 0)
+		);
+	END COMPONENT;
+	
+
+
 	--============================================================--
 	--                      SIGNALS                               --
 	--============================================================--
@@ -278,7 +290,7 @@ BEGIN
 	---------------------ATRIBUICOES DIRETAS---------------------
 
 	Level_code <= regA_s(3 DOWNTO 0);
-	Level_time <= regA_s(7 DOWNTO 4);
+
 
 	BTMUXEN <= (E1 OR E2);
 	BDMUXRST <= (R1 XOR R2);
@@ -299,5 +311,22 @@ BEGIN
 	t <= "0000111";
 	n <= "0101011";
 	r <= "0101111";
+
+
+	--Level_time <= regA_s(7 DOWNTO 4);
+	--	
+	--process(Level_time,regA_s)
+		--begin
+		--	if regA_s(7 DOWNTO 4) < "0101" then
+		--		Level_time <= "0101";
+		--	elsif regA_s(7 DOWNTO 4) > "1010" then
+		--		Level_time <= "1010";
+		--	else
+		--		Level_time <= regA_s(7 DOWNTO 4);
+		--	end if;
+	--end process;
+
+
+	ULimTempo : LimitadorTempo PORT MAP(regA_s(7 DOWNTO 4), Level_time);
 
 END circuito;
